@@ -4,6 +4,14 @@ using namespace testing;
 
 extern "C" {
 
+unsigned int greatestCommonDivisor(
+    unsigned int x,
+    unsigned int y
+)
+{
+    return 1u;
+}
+
 void listAdd(
     int sign1, unsigned int numerator1, unsigned int denominator1,
     int sign2, unsigned int numerator2, unsigned int denominator2,
@@ -41,6 +49,11 @@ void assertAdd(
     ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
 }
 
+TEST(GreatestCommonDivisor, IsOneWhenNoCommonDivisor)
+{
+    ASSERT_THAT( greatestCommonDivisor( 5u, 7u ), Eq( 1u ) );
+}
+
 TEST(Fraction, AddTwoFractionsCommonDenominator)
 {
     assertAdd( 1, 2u, 7u,
@@ -60,6 +73,13 @@ TEST(Fraction, AddTwoFractionsDifferentDenominator)
     assertAdd( 1, 2u, 7u,
                1, 3u, 5u,
                1, (2u * 5u) + (3u * 7u), 7u * 5u );
+}
+
+TEST(Fraction, DISABLED_AddTwoFractionsAnswerReduced)
+{
+    assertAdd( 1, 1u, 2u * 3u,
+               1, 1u, 3u * 5u,
+               1, 5u + 2u, 2u * 3u * 5u );
 }
 
 int main(int argc, char **argv)
