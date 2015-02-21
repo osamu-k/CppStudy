@@ -22,73 +22,44 @@ void listAdd(
 
 }
 
-TEST(Fraction, AddTwoFractionsCommonDenominator)
+void assertAdd(
+    int sign1, unsigned int numerator1, unsigned int denominator1,
+    int sign2, unsigned int numerator2, unsigned int denominator2,
+    int signExpected, unsigned int numeratorExpected, unsigned int denominatorExpected
+)
 {
-    int sign1 = 1;
-    unsigned int numerator1 = 2;
-    unsigned int denominator1 = 7;
-
-    int sign2 = 1;
-    unsigned int numerator2 = 3;
-    unsigned int denominator2 = 7;
-
-    int signA = 0;
-    unsigned int numeratorA = 0;
-    unsigned int denominatorA = 0;
+    int signResult = 0;
+    unsigned int numeratorResult = 0;
+    unsigned int denominatorResult = 0;
 
     listAdd( sign1, numerator1, denominator1,
              sign2, numerator2, denominator2,
-             &signA, &numeratorA, &denominatorA );
+             &signResult, &numeratorResult, &denominatorResult );
 
-    ASSERT_THAT( signA, Eq(1) );
-    ASSERT_THAT( numeratorA, Eq(5u) );
-    ASSERT_THAT( denominatorA, Eq(7u) );
+    ASSERT_THAT( signResult, Eq(signExpected) );
+    ASSERT_THAT( numeratorResult, Eq(numeratorExpected) );
+    ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
+}
+
+TEST(Fraction, AddTwoFractionsCommonDenominator)
+{
+    assertAdd( 1, 2u, 7u,
+               1, 3u, 7u,
+               1, (2u + 3u), 7u );
 }
 
 TEST(Fraction, AddAnotherTwoFractionsCommonDenominator)
 {
-    int sign1 = 1;
-    unsigned int numerator1 = 3;
-    unsigned int denominator1 = 5;
-
-    int sign2 = 1;
-    unsigned int numerator2 = 4;
-    unsigned int denominator2 = 5;
-
-    int signA = 0;
-    unsigned int numeratorA = 0;
-    unsigned int denominatorA = 0;
-
-    listAdd( sign1, numerator1, denominator1,
-             sign2, numerator2, denominator2,
-             &signA, &numeratorA, &denominatorA );
-
-    ASSERT_THAT( signA, Eq(1) );
-    ASSERT_THAT( numeratorA, Eq(7u) );
-    ASSERT_THAT( denominatorA, Eq(5u) );
+    assertAdd( 1, 3u, 5u,
+               1, 4u, 5u,
+               1, (3u + 4u), 5u );
 }
 
 TEST(Fraction, AddTwoFractionsDifferentDenominator)
 {
-    int sign1 = 1;
-    unsigned int numerator1 = 2;
-    unsigned int denominator1 = 7;
-
-    int sign2 = 1;
-    unsigned int numerator2 = 3;
-    unsigned int denominator2 = 5;
-
-    int signA = 0;
-    unsigned int numeratorA = 0;
-    unsigned int denominatorA = 0;
-
-    listAdd( sign1, numerator1, denominator1,
-             sign2, numerator2, denominator2,
-             &signA, &numeratorA, &denominatorA );
-
-    ASSERT_THAT( signA, Eq(1) );
-    ASSERT_THAT( numeratorA, Eq((2u * 5u) + (3u * 7u)) );
-    ASSERT_THAT( denominatorA, Eq(7u * 5u) );
+    assertAdd( 1, 2u, 7u,
+               1, 3u, 5u,
+               1, (2u * 5u) + (3u * 7u), 7u * 5u );
 }
 
 int main(int argc, char **argv)
