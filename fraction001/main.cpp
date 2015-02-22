@@ -16,11 +16,10 @@ unsigned int greatestCommonDivisor(
 {
     unsigned int big   = BIGGER(x, y);
     unsigned int small = SMALLER(x, y);
-    while( (big % small) != 0 ){
-        x = small;
-        y = big - small;
-        big   = BIGGER(x, y);
-        small = SMALLER(x, y);
+    unsigned int remainder;
+    while( (remainder = (big % small)) > 0 ){
+        big = small;
+        small = remainder;
     }
     return small;
 }
