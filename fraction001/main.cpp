@@ -29,7 +29,6 @@ void listAdd(
     int sign2, unsigned int numerator2, unsigned int denominator2,
     int *signA, unsigned int *numeratorA, unsigned int *denominatorA )
 {
-    *numeratorA = sign1 * (numerator1 * denominator2) + sign2 * (numerator2 * denominator1);
     int n = sign1 * (int)(numerator1 * denominator2) + sign2 * (int)(numerator2 * denominator1);
     if( n >= 0 ){
         *signA = 1;
@@ -126,6 +125,13 @@ TEST(Fraction, PositivePlusNegativeIsNegative)
     assertAdd( -1, 1u, 2u,
                1, 1u, 3u,
                -1, 1u, 6u );
+}
+
+TEST(Fraction, NegativePlusNegativeIsNegative)
+{
+    assertAdd( -1, 1u, 2u,
+               -1, 1u, 3u,
+               -1, 5u, 6u );
 }
 
 int main(int argc, char **argv)
