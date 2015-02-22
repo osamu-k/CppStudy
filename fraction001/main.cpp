@@ -9,8 +9,11 @@ unsigned int greatestCommonDivisor(
     unsigned int y
 )
 {
-    if( (y % x) == 0 ){
-        return x;
+    unsigned int small = (x < y) ? x : y;
+    unsigned int big   = (x < y) ? y : x;
+
+    if( (big % small) == 0 ){
+        return small;
     }
     return 1u;
 }
@@ -60,6 +63,11 @@ TEST(GreatestCommonDivisor, IsOneWhenNoCommonDivisor)
 TEST(GreatestCommonDivisor, OfXYIsXIfXDividesY)
 {
     ASSERT_THAT( greatestCommonDivisor( 3u, 3u * 5u), 3u );
+}
+
+TEST(GreatestCommonDivisor, OfXYIsYIfYDividesX)
+{
+    ASSERT_THAT( greatestCommonDivisor( 3u * 5u, 3u ), 3u );
 }
 
 TEST(Fraction, AddTwoFractionsCommonDenominator)
