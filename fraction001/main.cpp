@@ -30,14 +30,8 @@ void listAdd(
     int *signA, unsigned int *numeratorA, unsigned int *denominatorA )
 {
     *signA = sign1;
-    if( denominator1 == denominator2 ){
-        *numeratorA = numerator1 + numerator2;
-        *denominatorA = denominator1;
-    }
-    else{
-        *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
-        *denominatorA = denominator1 * denominator2;
-    }
+    *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
+    *denominatorA = denominator1 * denominator2;
     unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
     *numeratorA /= gcd;
     *denominatorA /= gcd;
