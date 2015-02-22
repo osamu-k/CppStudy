@@ -40,40 +40,48 @@ void listAdd(
         *numeratorA = - n;
     }
     */
+    unsigned int n1 = (numerator1 * denominator2);
+    unsigned int n2 = (numerator2 * denominator1);
     if( (sign1 > 0) && (sign2 > 0) ){
-        *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
+        *numeratorA = n1 + n2;
         *signA = 1;
     }
     else if( (sign1 < 0) && (sign2 < 0) ){
-        *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
+        *numeratorA = n1 + n2;
         *signA = -1;
     }
     else if( (sign1 > 0) && (sign2 < 0) ){
-        if( (numerator1 * denominator2) >= (numerator2 * denominator1) ){
-            *numeratorA = (numerator1 * denominator2) - (numerator2 * denominator1);
+        if( n1 >= n2 ){
+            *numeratorA = n1 - n2;
             *signA = 1;
         }
         else{
-            *numeratorA = (numerator2 * denominator1) - (numerator1 * denominator2);
+            *numeratorA = n2 - n1;
             *signA = -1;
         }
     }
     else {// if( (sign1 < 0) && (sign2 > 0) ){
-        if( (numerator1 * denominator2) >= (numerator2 * denominator1) ){
-            *numeratorA = (numerator1 * denominator2) - (numerator2 * denominator1);
+        if( n1 >= n2 ){
+            *numeratorA = n1 - n2;
             *signA = -1;
         }
         else{
-            *numeratorA = (numerator2 * denominator1) - (numerator1 * denominator2);
+            *numeratorA = n2 - n1;
             *signA = 1;
         }
     }
 
-
-    *denominatorA = denominator1 * denominator2;
-    unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
-    *numeratorA /= gcd;
-    *denominatorA /= gcd;
+    if( *numeratorA != 0 ){
+        *denominatorA = denominator1 * denominator2;
+        unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
+        *numeratorA /= gcd;
+        *denominatorA /= gcd;
+    }
+    else{
+        *numeratorA = 0;
+        *denominatorA = 1;
+        *signA = 1;
+    }
 }
 
 }
@@ -154,9 +162,23 @@ TEST(Fraction, PositivePlusNegativeIsPositive)
 
 TEST(Fraction, PositivePlusNegativeIsNegative)
 {
-    assertAdd( -1, 1u, 2u,
-               1, 1u, 3u,
+    assertAdd( 1, 1u, 3u,
+               -1, 1u, 2u,
                -1, 1u, 6u );
+}
+
+TEST(Fraction, PositivePlusNegativeIsZero)
+{
+    assertAdd( 1, 1u, 2u,
+               -1, 1u, 2u,
+               1, 0u, 1u );
+}
+
+TEST(Fraction, DISABLED_NegativePlusPositiveIsPositive)
+{
+    assertAdd( -1, 1u, 3u,
+               1, 1u, 3u,
+               1, 1u, 6u );
 }
 
 TEST(Fraction, NegativePlusNegativeIsNegative)
