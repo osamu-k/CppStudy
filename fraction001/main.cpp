@@ -174,10 +174,10 @@ TEST(Fraction, PositivePlusNegativeIsZero)
                1, 0u, 1u );
 }
 
-TEST(Fraction, DISABLED_NegativePlusPositiveIsPositive)
+TEST(Fraction, NegativePlusPositiveIsPositive)
 {
     assertAdd( -1, 1u, 3u,
-               1, 1u, 3u,
+               1, 1u, 2u,
                1, 1u, 6u );
 }
 
