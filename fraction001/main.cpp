@@ -1,21 +1,27 @@
 #include "gmock/gmock.h"
+#include <stdio.h>
 
 using namespace testing;
 
 extern "C" {
+
+#define BIGGER(x,y) (((x) < (y)) ? (y) : (x))
+#define SMALLER(x,y) (((x) < (y)) ? (x) : (y))
 
 unsigned int greatestCommonDivisor(
     unsigned int x,
     unsigned int y
 )
 {
-    unsigned int small = (x < y) ? x : y;
-    unsigned int big   = (x < y) ? y : x;
-
-    if( (big % small) == 0 ){
-        return small;
+    unsigned int big   = BIGGER(x, y);
+    unsigned int small = SMALLER(x, y);
+    while( (big % small) != 0 ){
+        x = small;
+        y = big - small;
+        big   = BIGGER(x, y);
+        small = SMALLER(x, y);
     }
-    return 1u;
+    return small;
 }
 
 void listAdd(
@@ -62,12 +68,17 @@ TEST(GreatestCommonDivisor, IsOneWhenNoCommonDivisor)
 
 TEST(GreatestCommonDivisor, OfXYIsXIfXDividesY)
 {
-    ASSERT_THAT( greatestCommonDivisor( 3u, 3u * 5u), 3u );
+    ASSERT_THAT( greatestCommonDivisor( 3u, 3u * 5u), Eq(3u) );
 }
 
 TEST(GreatestCommonDivisor, OfXYIsYIfYDividesX)
 {
-    ASSERT_THAT( greatestCommonDivisor( 3u * 5u, 3u ), 3u );
+    ASSERT_THAT( greatestCommonDivisor( 3u * 5u, 3u ), Eq(3u) );
+}
+
+TEST(GreatestCommonDivisor, IsProductOfAllCommonDivisors)
+{
+    ASSERT_THAT( greatestCommonDivisor( 2u * 3u * 5u * 7u, 3u * 7u * 11u ), Eq(3u * 7u) );
 }
 
 TEST(Fraction, AddTwoFractionsCommonDenominator)
