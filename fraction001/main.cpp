@@ -38,6 +38,9 @@ void listAdd(
         *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
         *denominatorA = denominator1 * denominator2;
     }
+    unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
+    *numeratorA /= gcd;
+    *denominatorA /= gcd;
 }
 
 }
@@ -102,7 +105,7 @@ TEST(Fraction, AddTwoFractionsDifferentDenominator)
                1, (2u * 5u) + (3u * 7u), 7u * 5u );
 }
 
-TEST(Fraction, DISABLED_AddTwoFractionsAnswerReduced)
+TEST(Fraction, AddTwoFractionsAnswerReduced)
 {
     assertAdd( 1, 1u, 2u * 3u,
                1, 1u, 3u * 5u,
