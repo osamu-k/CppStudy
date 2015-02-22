@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "limits.h"
+#include <stdio.h>
 
 using namespace testing;
 
@@ -29,6 +30,10 @@ void listAdd(
     int sign2, unsigned int numerator2, unsigned int denominator2,
     int *signA, unsigned int *numeratorA, unsigned int *denominatorA )
 {
+    unsigned int gcdOfDenominator = greatestCommonDivisor( denominator1, denominator2 );
+    denominator1 /= gcdOfDenominator;
+    denominator2 /= gcdOfDenominator;
+
     unsigned int n1 = (numerator1 * denominator2);
     unsigned int n2 = (numerator2 * denominator1);
     if( (sign1 * sign2) > 0 ){
@@ -47,7 +52,7 @@ void listAdd(
     }
 
     if( *numeratorA != 0 ){
-        *denominatorA = denominator1 * denominator2;
+        *denominatorA = denominator1 * denominator2 * gcdOfDenominator;
         unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
         *numeratorA /= gcd;
         *denominatorA /= gcd;
@@ -175,6 +180,13 @@ TEST(Fraction, AddResultHasMaxNumerator)
     assertAdd( 1, UINT_MAX - 1, 1u,
                1, 1u, 1u,
                1, UINT_MAX, 1u );
+}
+
+TEST(Fraction, AddResultHasMaxDenominator)
+{
+    assertAdd( 1, 1u, UINT_MAX,
+               1, 1u, UINT_MAX,
+               1, 2u, UINT_MAX );
 }
 
 int main(int argc, char **argv)
