@@ -9,6 +9,9 @@ unsigned int greatestCommonDivisor(
     unsigned int y
 )
 {
+    if( (y % x) == 0 ){
+        return x;
+    }
     return 1u;
 }
 
@@ -52,6 +55,11 @@ void assertAdd(
 TEST(GreatestCommonDivisor, IsOneWhenNoCommonDivisor)
 {
     ASSERT_THAT( greatestCommonDivisor( 5u, 7u ), Eq( 1u ) );
+}
+
+TEST(GreatestCommonDivisor, OfXYIsXIfXDividesY)
+{
+    ASSERT_THAT( greatestCommonDivisor( 3u, 3u * 5u), 3u );
 }
 
 TEST(Fraction, AddTwoFractionsCommonDenominator)
