@@ -181,6 +181,13 @@ TEST(Fraction, NegativePlusPositiveIsPositive)
                1, 1u, 6u );
 }
 
+TEST(Fraction, NegativePlusPositiveIsNegative)
+{
+    assertAdd( -1, 1u, 2u,
+               1, 1u, 3u,
+               -1, 1u, 6u );
+}
+
 TEST(Fraction, NegativePlusNegativeIsNegative)
 {
     assertAdd( -1, 1u, 2u,
