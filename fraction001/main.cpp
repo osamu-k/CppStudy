@@ -29,45 +29,20 @@ void listAdd(
     int sign2, unsigned int numerator2, unsigned int denominator2,
     int *signA, unsigned int *numeratorA, unsigned int *denominatorA )
 {
-    /*
-    int n = sign1 * (int)(numerator1 * denominator2) + sign2 * (int)(numerator2 * denominator1);
-    if( n >= 0 ){
-        *signA = 1;
-        *numeratorA = n;
-    }
-    else{
-        *signA = -1;
-        *numeratorA = - n;
-    }
-    */
     unsigned int n1 = (numerator1 * denominator2);
     unsigned int n2 = (numerator2 * denominator1);
-    if( (sign1 > 0) && (sign2 > 0) ){
+    if( (sign1 * sign2) > 0 ){
         *numeratorA = n1 + n2;
-        *signA = 1;
+        *signA = sign1;
     }
-    else if( (sign1 < 0) && (sign2 < 0) ){
-        *numeratorA = n1 + n2;
-        *signA = -1;
-    }
-    else if( (sign1 > 0) && (sign2 < 0) ){
+    else {
         if( n1 >= n2 ){
             *numeratorA = n1 - n2;
-            *signA = 1;
+            *signA = sign1;
         }
         else{
             *numeratorA = n2 - n1;
-            *signA = -1;
-        }
-    }
-    else {// if( (sign1 < 0) && (sign2 > 0) ){
-        if( n1 >= n2 ){
-            *numeratorA = n1 - n2;
-            *signA = -1;
-        }
-        else{
-            *numeratorA = n2 - n1;
-            *signA = 1;
+            *signA = sign2;
         }
     }
 
