@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include <stdio.h>
+#include "limits.h"
 
 using namespace testing;
 
@@ -29,6 +29,7 @@ void listAdd(
     int sign2, unsigned int numerator2, unsigned int denominator2,
     int *signA, unsigned int *numeratorA, unsigned int *denominatorA )
 {
+    /*
     int n = sign1 * (int)(numerator1 * denominator2) + sign2 * (int)(numerator2 * denominator1);
     if( n >= 0 ){
         *signA = 1;
@@ -38,6 +39,37 @@ void listAdd(
         *signA = -1;
         *numeratorA = - n;
     }
+    */
+    if( (sign1 > 0) && (sign2 > 0) ){
+        *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
+        *signA = 1;
+    }
+    else if( (sign1 < 0) && (sign2 < 0) ){
+        *numeratorA = (numerator1 * denominator2) + (numerator2 * denominator1);
+        *signA = -1;
+    }
+    else if( (sign1 > 0) && (sign2 < 0) ){
+        if( (numerator1 * denominator2) >= (numerator2 * denominator1) ){
+            *numeratorA = (numerator1 * denominator2) - (numerator2 * denominator1);
+            *signA = 1;
+        }
+        else{
+            *numeratorA = (numerator2 * denominator1) - (numerator1 * denominator2);
+            *signA = -1;
+        }
+    }
+    else {// if( (sign1 < 0) && (sign2 > 0) ){
+        if( (numerator1 * denominator2) >= (numerator2 * denominator1) ){
+            *numeratorA = (numerator1 * denominator2) - (numerator2 * denominator1);
+            *signA = -1;
+        }
+        else{
+            *numeratorA = (numerator2 * denominator1) - (numerator1 * denominator2);
+            *signA = 1;
+        }
+    }
+
+
     *denominatorA = denominator1 * denominator2;
     unsigned int gcd = greatestCommonDivisor( *numeratorA, *denominatorA );
     *numeratorA /= gcd;
@@ -132,6 +164,13 @@ TEST(Fraction, NegativePlusNegativeIsNegative)
     assertAdd( -1, 1u, 2u,
                -1, 1u, 3u,
                -1, 5u, 6u );
+}
+
+TEST(Fraction, AddResultHasMaxNumerator)
+{
+    assertAdd( 1, UINT_MAX - 1, 1u,
+               1, 1u, 1u,
+               1, UINT_MAX, 1u );
 }
 
 int main(int argc, char **argv)
