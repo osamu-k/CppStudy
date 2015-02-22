@@ -189,6 +189,13 @@ TEST(Fraction, AddResultHasMaxDenominator)
                1, 2u, UINT_MAX );
 }
 
+TEST(Fraction, AddResultHasVeryBigDenominator)
+{
+    assertAdd( 1, 1u, UINT_MAX / 2,
+               1, 1u, 2,
+               1, 2u + (UINT_MAX / 2), (UINT_MAX / 2) * 2 );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
