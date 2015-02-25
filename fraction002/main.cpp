@@ -19,34 +19,37 @@ void fractionAdd(
 
 }
 
+void assertFractionAdd(
+    int sign1, unsigned int numerator1, unsigned int denominator1,
+    int sign2, unsigned int numerator2, unsigned int denominator2,
+    int signExpected, unsigned numeratorExpected, unsigned denominatorExpected
+)
+{
+    int signResult = 0;
+    unsigned int numeratorResult = 0;
+    unsigned int denominatorResult = 0;
+
+    fractionAdd( sign1, numerator1, denominator1,
+                 sign2, numerator2, denominator2,
+                 &signResult, &numeratorResult, &denominatorResult );
+
+    ASSERT_THAT( signResult, Eq(signExpected) );
+    ASSERT_THAT( numeratorResult, Eq(numeratorExpected) );
+    ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
+}
+
 TEST( Fraction, AddFractionsOfCommonDenominator1 )
 {
-    int sign = 0;
-    unsigned int numerator = 0;
-    unsigned int denominator = 0;
-
-    fractionAdd( +1, 1, 5,
-                 +1, 2, 5,
-                 &sign, &numerator, &denominator );
-
-    ASSERT_THAT( sign, Eq(+1) );
-    ASSERT_THAT( numerator, Eq(3u) );
-    ASSERT_THAT( denominator, Eq(5u) );
+    assertFractionAdd( +1, 1u, 5u,
+                       +1, 2u, 5u,
+                       +1, 3u, 5u );
 }
 
 TEST( Fraction, AddFractionsOfCommonDenominator2 )
 {
-    int sign = 0;
-    unsigned int numerator = 0;
-    unsigned int denominator = 0;
-
-    fractionAdd( +1, 2, 7,
-                 +1, 3, 7,
-                 &sign, &numerator, &denominator );
-
-    ASSERT_THAT( sign, Eq(+1) );
-    ASSERT_THAT( numerator, Eq(5u) );
-    ASSERT_THAT( denominator, Eq(7u) );
+    assertFractionAdd( +1, 2u, 7u,
+                       +1, 3u, 7u,
+                       +1, 5u, 7u );
 }
 
 int main(int argc, char **argv)
