@@ -12,14 +12,14 @@ void fractionAdd(
     int *signResult, unsigned *numeratorResult, unsigned *denominatorResult
 )
 {
-    *signResult = +1;
-    *numeratorResult = 3u;
-    *denominatorResult = 5u;
+    *signResult = sign1;
+    *numeratorResult = numerator1 + numerator2;
+    *denominatorResult = denominator1;
 }
 
 }
 
-TEST( Fraction, AddFractionsOfCommonDenominator )
+TEST( Fraction, AddFractionsOfCommonDenominator1 )
 {
     int sign = 0;
     unsigned int numerator = 0;
@@ -32,6 +32,21 @@ TEST( Fraction, AddFractionsOfCommonDenominator )
     ASSERT_THAT( sign, Eq(+1) );
     ASSERT_THAT( numerator, Eq(3u) );
     ASSERT_THAT( denominator, Eq(5u) );
+}
+
+TEST( Fraction, AddFractionsOfCommonDenominator2 )
+{
+    int sign = 0;
+    unsigned int numerator = 0;
+    unsigned int denominator = 0;
+
+    fractionAdd( +1, 2, 7,
+                 +1, 3, 7,
+                 &sign, &numerator, &denominator );
+
+    ASSERT_THAT( sign, Eq(+1) );
+    ASSERT_THAT( numerator, Eq(5u) );
+    ASSERT_THAT( denominator, Eq(7u) );
 }
 
 int main(int argc, char **argv)
