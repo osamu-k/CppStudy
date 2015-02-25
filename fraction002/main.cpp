@@ -11,7 +11,14 @@ unsigned int greatestCommonDivisor(
     unsigned int y
 )
 {
-    return 1u;
+    unsigned int big = (x < y) ? y : x;
+    unsigned int small = (x < y) ? x : y;
+    while( big % small ){
+        unsigned int tmp = big % small;
+        big = small;
+        small = tmp;
+    }
+    return small;
 }
 
 void fractionAdd(
@@ -37,6 +44,12 @@ TEST( GCD, IsOneIfNoCommonDivisor )
 {
     unsigned int gcd = greatestCommonDivisor( 5u, 7u );
     ASSERT_THAT( gcd, Eq(1u) );
+}
+
+TEST( GCD, IsProductOfAllCommonDivisor )
+{
+    unsigned int gcd = greatestCommonDivisor( 3u * 5u * 7u, 5u * 7u * 11u );
+    ASSERT_THAT( gcd, Eq(5u * 7u) );
 }
 
 void assertFractionAdd(
