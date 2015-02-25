@@ -13,8 +13,14 @@ void fractionAdd(
 )
 {
     *signResult = sign1;
-    *numeratorResult = numerator1 + numerator2;
-    *denominatorResult = denominator1;
+    if( denominator1 == denominator2 ){
+        *numeratorResult = numerator1 + numerator2;
+        *denominatorResult = denominator1;
+    }
+    else{
+        *numeratorResult = numerator1 * denominator2 + numerator2 * denominator1;
+        *denominatorResult = denominator1 * denominator2;
+    }
 }
 
 }
@@ -50,6 +56,13 @@ TEST( Fraction, AddFractionsOfCommonDenominator2 )
     assertFractionAdd( +1, 2u, 7u,
                        +1, 3u, 7u,
                        +1, 5u, 7u );
+}
+
+TEST( Fraction, AddFractionsOfDifferentDenominator )
+{
+    assertFractionAdd( +1, 2u, 5u,
+                       +1, 3u, 7u,
+                       +1, (2u * 7u) + (3u * 5u), 5u * 7u );
 }
 
 int main(int argc, char **argv)
