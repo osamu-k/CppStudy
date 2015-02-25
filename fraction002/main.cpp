@@ -28,14 +28,11 @@ void fractionAdd(
 )
 {
     *signResult = sign1;
-    if( denominator1 == denominator2 ){
-        *numeratorResult = numerator1 + numerator2;
-        *denominatorResult = denominator1;
-    }
-    else{
-        *numeratorResult = numerator1 * denominator2 + numerator2 * denominator1;
-        *denominatorResult = denominator1 * denominator2;
-    }
+    *numeratorResult = numerator1 * denominator2 + numerator2 * denominator1;
+    *denominatorResult = denominator1 * denominator2;
+    unsigned int gcd = greatestCommonDivisor( *numeratorResult, *denominatorResult );
+    *numeratorResult /= gcd;
+    *denominatorResult /= gcd;
 }
 
 }
@@ -92,7 +89,7 @@ TEST( Fraction, AddFractionsOfDifferentDenominator )
                        +1, (2u * 7u) + (3u * 5u), 5u * 7u );
 }
 
-TEST( Fraction, DISABLED_AddFractionsResultReduced )
+TEST( Fraction, AddFractionsResultReduced )
 {
     assertFractionAdd( +1, 1u, 6u,
                        +1, 1u, 3u,
