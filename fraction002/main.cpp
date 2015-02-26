@@ -161,6 +161,13 @@ TEST( Fraction, AddNegativeAndPositiveResultNegative )
                        -1, 1u, 6u );
 }
 
+TEST( Fraction, AddNegativeAndPositiveResultZero )
+{
+    assertFractionAdd( -1, 1u, 3u,
+                       +1, 1u, 3u,
+                       +1, 0u, 1u );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
