@@ -43,8 +43,14 @@ void fractionAdd(
         }
     }
     else{
-        *numeratorResult =  numerator2 * denominator1 - numerator1 * denominator2;
-        *signResult = +1;
+        if( numerator2 * denominator1 >= numerator1 * denominator2 ){
+            *numeratorResult =  numerator2 * denominator1 - numerator1 * denominator2;
+            *signResult = +1;
+        }
+        else{
+            *numeratorResult = numerator1 * denominator2 - numerator2 * denominator1;
+            *signResult = -1;
+        }
     }
     if( *numeratorResult != 0 ){
         *denominatorResult = denominator1 * denominator2;
@@ -146,6 +152,13 @@ TEST( Fraction, AddNegativeAndPositiveResultPositive )
     assertFractionAdd( -1, 1u, 3u,
                        +1, 1u, 2u,
                        +1, 1u, 6u );
+}
+
+TEST( Fraction, AddNegativeAndPositiveResultNegative )
+{
+    assertFractionAdd( -1, 1u, 2u,
+                       +1, 1u, 3u,
+                       -1, 1u, 6u );
 }
 
 int main(int argc, char **argv)
