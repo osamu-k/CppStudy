@@ -40,10 +40,17 @@ void fractionAdd(
             *signResult = -1;
         }
     }
-    *denominatorResult = denominator1 * denominator2;
-    unsigned int gcd = greatestCommonDivisor( *numeratorResult, *denominatorResult );
-    *numeratorResult /= gcd;
-    *denominatorResult /= gcd;
+    if( *numeratorResult != 0 ){
+        *denominatorResult = denominator1 * denominator2;
+        unsigned int gcd = greatestCommonDivisor( *numeratorResult, *denominatorResult );
+        *numeratorResult /= gcd;
+        *denominatorResult /= gcd;
+    }
+    else{
+        *signResult = +1;
+        *numeratorResult = 0;
+        *denominatorResult = 1;
+    }
 }
 
 }
@@ -119,6 +126,13 @@ TEST( Fraction, AddPositiveAndNegativeResultNegative )
     assertFractionAdd( +1, 1u, 3u,
                        -1, 1u, 2u,
                        -1, 1u, 6u );
+}
+
+TEST( Fraction, AddPositiveAndNegativeResultZero )
+{
+    assertFractionAdd( +1, 1u, 3u,
+                       -1, 1u, 3u,
+                       +1, 0u, 1u );
 }
 
 int main(int argc, char **argv)
