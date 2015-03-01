@@ -83,6 +83,7 @@ TEST( GCD, IsProductOfAllCommonDivisor )
 void assertFractionAdd(
     int sign1, unsigned int numerator1, unsigned int denominator1,
     int sign2, unsigned int numerator2, unsigned int denominator2,
+    enum fractionStatus statusExpected,
     int signExpected, unsigned numeratorExpected, unsigned denominatorExpected
 )
 {
@@ -94,16 +95,19 @@ void assertFractionAdd(
                  sign2, numerator2, denominator2,
                  &signResult, &numeratorResult, &denominatorResult );
 
-    ASSERT_THAT( status, Eq(FRACTION_OK) );
-    ASSERT_THAT( signResult, Eq(signExpected) );
-    ASSERT_THAT( numeratorResult, Eq(numeratorExpected) );
-    ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
+    ASSERT_THAT( status, Eq(statusExpected) );
+    if( status == FRACTION_OK ){
+        ASSERT_THAT( signResult, Eq(signExpected) );
+        ASSERT_THAT( numeratorResult, Eq(numeratorExpected) );
+        ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
+    }
 }
 
 TEST( Fraction, AddFractionsOfCommonDenominator1 )
 {
     assertFractionAdd( +1, 1u, 5u,
                        +1, 2u, 5u,
+                       FRACTION_OK,
                        +1, 3u, 5u );
 }
 
@@ -111,6 +115,7 @@ TEST( Fraction, AddFractionsOfCommonDenominator2 )
 {
     assertFractionAdd( +1, 2u, 7u,
                        +1, 3u, 7u,
+                       FRACTION_OK,
                        +1, 5u, 7u );
 }
 
@@ -118,6 +123,7 @@ TEST( Fraction, AddFractionsOfDifferentDenominator )
 {
     assertFractionAdd( +1, 2u, 5u,
                        +1, 3u, 7u,
+                       FRACTION_OK,
                        +1, (2u * 7u) + (3u * 5u), 5u * 7u );
 }
 
@@ -125,6 +131,7 @@ TEST( Fraction, AddFractionsResultReduced )
 {
     assertFractionAdd( +1, 1u, 6u,
                        +1, 1u, 3u,
+                       FRACTION_OK,
                        +1, 1u, 2u );
 }
 
@@ -132,6 +139,7 @@ TEST( Fraction, AddPositiveAndNegativeResultPositive )
 {
     assertFractionAdd( +1, 1u, 2u,
                        -1, 1u, 3u,
+                       FRACTION_OK,
                        +1, 1u, 6u );
 }
 
@@ -139,6 +147,7 @@ TEST( Fraction, AddPositiveAndNegativeResultNegative )
 {
     assertFractionAdd( +1, 1u, 3u,
                        -1, 1u, 2u,
+                       FRACTION_OK,
                        -1, 1u, 6u );
 }
 
@@ -146,6 +155,7 @@ TEST( Fraction, AddPositiveAndNegativeResultZero )
 {
     assertFractionAdd( +1, 1u, 3u,
                        -1, 1u, 3u,
+                       FRACTION_OK,
                        +1, 0u, 1u );
 }
 
@@ -153,6 +163,7 @@ TEST( Fraction, AddNegativeAndPositiveResultPositive )
 {
     assertFractionAdd( -1, 1u, 3u,
                        +1, 1u, 2u,
+                       FRACTION_OK,
                        +1, 1u, 6u );
 }
 
@@ -160,6 +171,7 @@ TEST( Fraction, AddNegativeAndPositiveResultNegative )
 {
     assertFractionAdd( -1, 1u, 2u,
                        +1, 1u, 3u,
+                       FRACTION_OK,
                        -1, 1u, 6u );
 }
 
@@ -167,6 +179,7 @@ TEST( Fraction, AddNegativeAndPositiveResultZero )
 {
     assertFractionAdd( -1, 1u, 3u,
                        +1, 1u, 3u,
+                       FRACTION_OK,
                        +1, 0u, 1u );
 }
 
@@ -174,6 +187,7 @@ TEST( Fraction, AddNegativeAndNegativeResultNegative )
 {
     assertFractionAdd( -1, 1u, 2u,
                        -1, 1u, 3u,
+                       FRACTION_OK,
                        -1, 5u, 6u );
 }
 
@@ -181,21 +195,16 @@ TEST( fraction, AbsoluteValueOfSignShouldBeIgnored)
 {
     assertFractionAdd( +3, 1u, 3u,
                        +5, 1u, 2u,
+                       FRACTION_OK,
                        +1, 5u, 6u );
 }
 
 TEST( fraction, ProductOfDenominatorsOverflow )
 {
-    int signResult = 0;
-    unsigned int numeratorResult = 0;
-    unsigned int denominatorResult = 0;
-
-    enum fractionStatus status = fractionAdd(
-                 +1, 1, UINT_MAX / 2,
-                 +1, 1, 3,
-                 &signResult, &numeratorResult, &denominatorResult );
-
-    ASSERT_THAT( status, Eq( FRACTION_DENOMINATOR_OVERFLOW ) );
+    assertFractionAdd( +1, 1, UINT_MAX / 2,
+                       +1, 1, 3,
+                       FRACTION_DENOMINATOR_OVERFLOW,
+                       +1, 0u, 1u );
 }
 
 int main(int argc, char **argv)
