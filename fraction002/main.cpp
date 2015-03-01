@@ -27,6 +27,8 @@ void fractionAdd(
     int *signResult, unsigned *numeratorResult, unsigned *denominatorResult
 )
 {
+    sign1 = (sign1 >= 0) ? +1 : -1;
+    sign2 = (sign2 >= 0) ? +1 : -1;
     unsigned int n1 = numerator1 * denominator2;
     unsigned int n2 = numerator2 * denominator1;
     if( sign1 == sign2 ){
@@ -164,6 +166,13 @@ TEST( Fraction, AddNegativeAndNegativeResultNegative )
     assertFractionAdd( -1, 1u, 2u,
                        -1, 1u, 3u,
                        -1, 5u, 6u );
+}
+
+TEST( fraction, AbsoluteValueOfSignShouldBeIgnored)
+{
+    assertFractionAdd( +3, 1u, 3u,
+                       +5, 1u, 2u,
+                       +1, 5u, 6u );
 }
 
 int main(int argc, char **argv)
