@@ -23,6 +23,7 @@ unsigned int greatestCommonDivisor(
 
 enum fractionStatus{
     FRACTION_OK,
+    FRACTION_NUMERATOR_OVERFLOW,
     FRACTION_DENOMINATOR_OVERFLOW
 };
 
@@ -34,7 +35,11 @@ enum fractionStatus fractionAdd(
 {
     sign1 = (sign1 >= 0) ? +1 : -1;
     sign2 = (sign2 >= 0) ? +1 : -1;
+    if( UINT_MAX / numerator1 < denominator2 )
+        return FRACTION_NUMERATOR_OVERFLOW;
     unsigned int n1 = numerator1 * denominator2;
+    if( UINT_MAX / numerator2 < denominator1 )
+        return FRACTION_NUMERATOR_OVERFLOW;
     unsigned int n2 = numerator2 * denominator1;
     if( sign1 == sign2 ){
         *numeratorResult = n1 + n2;
@@ -204,6 +209,22 @@ TEST( fraction, ProductOfDenominatorsOverflow )
     assertFractionAdd( +1, 1, UINT_MAX / 2,
                        +1, 1, 3,
                        FRACTION_DENOMINATOR_OVERFLOW,
+                       +1, 0u, 1u );
+}
+
+TEST( fraction, ProductOfNumeratorAndDenominatorOverflow1 )
+{
+    assertFractionAdd( +1, 1, UINT_MAX / 2,
+                       +1, 3, 1,
+                       FRACTION_NUMERATOR_OVERFLOW,
+                       +1, 0u, 1u );
+}
+
+TEST( fraction, ProductOfNumeratorAndDenominatorOverflow2 )
+{
+    assertFractionAdd( +1, 3, 1,
+                       +1, 1, UINT_MAX / 2,
+                       FRACTION_NUMERATOR_OVERFLOW,
                        +1, 0u, 1u );
 }
 
