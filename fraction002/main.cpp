@@ -27,33 +27,35 @@ void fractionAdd(
     int *signResult, unsigned *numeratorResult, unsigned *denominatorResult
 )
 {
+    unsigned int n1 = numerator1 * denominator2;
+    unsigned int n2 = numerator2 * denominator1;
     if( sign1 > 0 ){
         if( sign2 > 0 ){
-            *numeratorResult = numerator1 * denominator2 + numerator2 * denominator1;
+            *numeratorResult = n1 + n2;
             *signResult = +1;
         }else{
-            if( (numerator1 * denominator2) >= (numerator2 * denominator1) ){
-                *numeratorResult = numerator1 * denominator2 - numerator2 * denominator1;
+            if( n1 >= n2 ){
+                *numeratorResult = n1 - n2;
                 *signResult = +1;
             }
             else{
-                *numeratorResult = numerator2 * denominator1 - numerator1 * denominator2;
+                *numeratorResult = n2 - n1;
                 *signResult = -1;
             }
         }
     }
     else{
         if( sign2 < 0 ){
-            *numeratorResult = numerator1 * denominator2 + numerator2 * denominator1;
+            *numeratorResult = n1 + n2;
             *signResult = -1;
         }
         else{
-            if( numerator2 * denominator1 >= numerator1 * denominator2 ){
-                *numeratorResult =  numerator2 * denominator1 - numerator1 * denominator2;
+            if( n2 >= n1 ){
+                *numeratorResult =  n2 - n1;
                 *signResult = +1;
             }
             else{
-                *numeratorResult = numerator1 * denominator2 - numerator2 * denominator1;
+                *numeratorResult = n1 - n2;
                 *signResult = -1;
             }
         }
