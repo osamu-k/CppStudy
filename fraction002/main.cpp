@@ -21,7 +21,12 @@ unsigned int greatestCommonDivisor(
     return small;
 }
 
-void fractionAdd(
+enum fractionStatus{
+    FRACTION_OK,
+    FRACTION_DENOMINATOR_OVERFLOW
+};
+
+enum fractionStatus fractionAdd(
     int sign1, unsigned int numerator1, unsigned int denominator1,
     int sign2, unsigned int numerator2, unsigned int denominator2,
     int *signResult, unsigned *numeratorResult, unsigned *denominatorResult
@@ -46,6 +51,8 @@ void fractionAdd(
         }
     }
     if( *numeratorResult != 0 ){
+        if( (UINT_MAX / denominator1) < denominator2 )
+            return FRACTION_DENOMINATOR_OVERFLOW;
         *denominatorResult = denominator1 * denominator2;
         unsigned int gcd = greatestCommonDivisor( *numeratorResult, *denominatorResult );
         *numeratorResult /= gcd;
@@ -56,6 +63,7 @@ void fractionAdd(
         *numeratorResult = 0;
         *denominatorResult = 1;
     }
+    return FRACTION_OK;
 }
 
 }
@@ -82,10 +90,11 @@ void assertFractionAdd(
     unsigned int numeratorResult = 0;
     unsigned int denominatorResult = 0;
 
-    fractionAdd( sign1, numerator1, denominator1,
+    enum fractionStatus status = fractionAdd( sign1, numerator1, denominator1,
                  sign2, numerator2, denominator2,
                  &signResult, &numeratorResult, &denominatorResult );
 
+    ASSERT_THAT( status, Eq(FRACTION_OK) );
     ASSERT_THAT( signResult, Eq(signExpected) );
     ASSERT_THAT( numeratorResult, Eq(numeratorExpected) );
     ASSERT_THAT( denominatorResult, Eq(denominatorExpected) );
@@ -173,6 +182,20 @@ TEST( fraction, AbsoluteValueOfSignShouldBeIgnored)
     assertFractionAdd( +3, 1u, 3u,
                        +5, 1u, 2u,
                        +1, 5u, 6u );
+}
+
+TEST( fraction, ProductOfDenominatorsOverflow )
+{
+    int signResult = 0;
+    unsigned int numeratorResult = 0;
+    unsigned int denominatorResult = 0;
+
+    enum fractionStatus status = fractionAdd(
+                 +1, 1, UINT_MAX / 2,
+                 +1, 1, 3,
+                 &signResult, &numeratorResult, &denominatorResult );
+
+    ASSERT_THAT( status, Eq( FRACTION_DENOMINATOR_OVERFLOW ) );
 }
 
 int main(int argc, char **argv)
