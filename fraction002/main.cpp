@@ -27,6 +27,16 @@ enum fractionStatus{
     FRACTION_DENOMINATOR_OVERFLOW
 };
 
+bool productsWithOverflowCheck(
+    unsigned int x, unsigned int y, unsigned int *result
+)
+{
+    if( (UINT_MAX / x) < y )
+        return false;
+    *result = x * y;
+    return true;
+}
+
 enum fractionStatus fractionAdd(
     int sign1, unsigned int numerator1, unsigned int denominator1,
     int sign2, unsigned int numerator2, unsigned int denominator2,
@@ -35,12 +45,12 @@ enum fractionStatus fractionAdd(
 {
     sign1 = (sign1 >= 0) ? +1 : -1;
     sign2 = (sign2 >= 0) ? +1 : -1;
-    if( UINT_MAX / numerator1 < denominator2 )
+    enum fractionStatus status;
+    unsigned int n1, n2;
+    if( ! productsWithOverflowCheck( numerator1, denominator2, &n1 ) )
         return FRACTION_NUMERATOR_OVERFLOW;
-    unsigned int n1 = numerator1 * denominator2;
-    if( UINT_MAX / numerator2 < denominator1 )
+    if( ! productsWithOverflowCheck( numerator2, denominator1, &n2 ) )
         return FRACTION_NUMERATOR_OVERFLOW;
-    unsigned int n2 = numerator2 * denominator1;
     if( sign1 == sign2 ){
         *numeratorResult = n1 + n2;
         *signResult = sign1;
@@ -56,9 +66,8 @@ enum fractionStatus fractionAdd(
         }
     }
     if( *numeratorResult != 0 ){
-        if( (UINT_MAX / denominator1) < denominator2 )
+        if( ! productsWithOverflowCheck( denominator1, denominator2, denominatorResult ) )
             return FRACTION_DENOMINATOR_OVERFLOW;
-        *denominatorResult = denominator1 * denominator2;
         unsigned int gcd = greatestCommonDivisor( *numeratorResult, *denominatorResult );
         *numeratorResult /= gcd;
         *denominatorResult /= gcd;
