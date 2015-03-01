@@ -27,6 +27,16 @@ enum fractionStatus{
     FRACTION_DENOMINATOR_OVERFLOW
 };
 
+bool sumWithOverflowCheck(
+    unsigned int x, unsigned int y, unsigned int *result
+)
+{
+    if( (UINT_MAX - x) < y )
+        return false;
+    *result = x + y;
+    return true;
+}
+
 bool productsWithOverflowCheck(
     unsigned int x, unsigned int y, unsigned int *result
 )
@@ -52,7 +62,8 @@ enum fractionStatus fractionAdd(
     if( ! productsWithOverflowCheck( numerator2, denominator1, &n2 ) )
         return FRACTION_NUMERATOR_OVERFLOW;
     if( sign1 == sign2 ){
-        *numeratorResult = n1 + n2;
+        if( ! sumWithOverflowCheck( n1, n2, numeratorResult ) )
+            return FRACTION_NUMERATOR_OVERFLOW;
         *signResult = sign1;
     }
     else{
@@ -233,6 +244,14 @@ TEST( fraction, ProductOfNumeratorAndDenominatorOverflow2 )
 {
     assertFractionAdd( +1, 3, 1,
                        +1, 1, UINT_MAX / 2,
+                       FRACTION_NUMERATOR_OVERFLOW,
+                       +1, 0u, 1u );
+}
+
+TEST( fraction, SumOfNumeratorsOverflow )
+{
+    assertFractionAdd( +1, (UINT_MAX / 2) + 1, 1,
+                       +1, (UINT_MAX / 2) + 1, 1,
                        FRACTION_NUMERATOR_OVERFLOW,
                        +1, 0u, 1u );
 }
