@@ -34,25 +34,13 @@ void fractionAdd(
         *signResult = sign1;
     }
     else{
-        if( sign1 > 0 ){
-            if( n1 >= n2 ){
-                *numeratorResult = n1 - n2;
-                *signResult = +1;
-            }
-            else{
-                *numeratorResult = n2 - n1;
-                *signResult = -1;
-            }
+        if( n1 >= n2 ){
+            *numeratorResult = n1 - n2;
+            *signResult = sign1;
         }
         else{
-            if( n2 >= n1 ){
-                *numeratorResult =  n2 - n1;
-                *signResult = +1;
-            }
-            else{
-                *numeratorResult = n1 - n2;
-                *signResult = -1;
-            }
+            *numeratorResult = n2 - n1;
+            *signResult = - sign1;
         }
     }
     if( *numeratorResult != 0 ){
