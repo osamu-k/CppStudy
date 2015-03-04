@@ -356,6 +356,14 @@ TEST( Fraction, MultiplyPositiveAndPositiveIsPositive)
                             +1, 3u * 2u, 5u * 7u );
 }
 
+TEST( Fraction, MultiplyPositiveAndNegativeIsNegative)
+{
+    assertFractionMultiply( +1, 3u, 5u,
+                            -1, 2u, 7u,
+                            FRACTION_OK,
+                            -1, 3u * 2u, 5u * 7u );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
