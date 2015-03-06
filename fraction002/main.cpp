@@ -114,11 +114,25 @@ enum fractionStatus fractionMultiply(
     sign2 = (sign2 >= 0) ? +1 : -1;
 
     *signResult = sign1 * sign2;
-    *numeratorResult = numerator1 * numerator2;
+    if( ! productsWithOverflowCheck( numerator1, numerator2, numeratorResult ) ){
+        return FRACTION_NUMERATOR_OVERFLOW;
+    }
     if( ! productsWithOverflowCheck( denominator1, denominator2, denominatorResult ) ){
         return FRACTION_DENOMINATOR_OVERFLOW;
     }
     return FRACTION_OK;
+}
+
+enum fractionStatus fractionDivide(
+    int sign1, unsigned int numerator1, unsigned int denominator1,
+    int sign2, unsigned int numerator2, unsigned int denominator2,
+    int *signResult, unsigned *numeratorResult, unsigned *denominatorResult
+)
+{
+    return fractionMultiply(
+                sign1, numerator1, denominator1,
+                sign2, denominator2, numerator2,
+                signResult, numeratorResult, denominatorResult );
 }
 
 }
@@ -206,6 +220,22 @@ void assertFractionMultiply(
 {
     assertFractionCalc(
         fractionMultiply,
+        sign1, numerator1, denominator1,
+        sign2, numerator2, denominator2,
+        statusExpected,
+        signExpected, numeratorExpected, denominatorExpected
+    );
+}
+
+void assertFractionDivide(
+    int sign1, unsigned int numerator1, unsigned int denominator1,
+    int sign2, unsigned int numerator2, unsigned int denominator2,
+    enum fractionStatus statusExpected,
+    int signExpected, unsigned numeratorExpected, unsigned denominatorExpected
+)
+{
+    assertFractionCalc(
+        fractionDivide,
         sign1, numerator1, denominator1,
         sign2, numerator2, denominator2,
         statusExpected,
@@ -387,6 +417,22 @@ TEST( Fraction, MultyplyDenominatorsOverflow )
                             +1, 1, 3,
                             FRACTION_DENOMINATOR_OVERFLOW,
                             +1, 0u, 1u );
+}
+
+TEST( Fraction, MultiplyNumeratorsOverflow )
+{
+    assertFractionMultiply( +1, UINT_MAX / 2, 1,
+                            +1, 3, 1,
+                            FRACTION_NUMERATOR_OVERFLOW,
+                            +1, 0u, 1u );
+}
+
+TEST( Fraction, DividePositiveAndPositiveIsPositive)
+{
+    assertFractionDivide( +1, 3u, 5u,
+                          +1, 2u, 7u,
+                          FRACTION_OK,
+                          +1, 3u * 7u, 5u * 2u );
 }
 
 int main(int argc, char **argv)
