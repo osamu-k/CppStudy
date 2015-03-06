@@ -115,8 +115,9 @@ enum fractionStatus fractionMultiply(
 
     *signResult = sign1 * sign2;
     *numeratorResult = numerator1 * numerator2;
-    *denominatorResult = denominator1 * denominator2;
-
+    if( ! productsWithOverflowCheck( denominator1, denominator2, denominatorResult ) ){
+        return FRACTION_DENOMINATOR_OVERFLOW;
+    }
     return FRACTION_OK;
 }
 
@@ -378,6 +379,14 @@ TEST( Fraction, NegativeAndNegativeIsPositive)
                             -1, 2u, 7u,
                             FRACTION_OK,
                             +1, 3u * 2u, 5u * 7u );
+}
+
+TEST( Fraction, MultyplyDenominatorsOverflow )
+{
+    assertFractionMultiply( +1, 1, UINT_MAX / 2,
+                            +1, 1, 3,
+                            FRACTION_DENOMINATOR_OVERFLOW,
+                            +1, 0u, 1u );
 }
 
 int main(int argc, char **argv)
