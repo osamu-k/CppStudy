@@ -443,6 +443,14 @@ TEST( Fraction, DividePositiveAndNegativeIsNegative)
                           -1, 3u * 7u, 5u * 2u );
 }
 
+TEST( Fraction, DivideDenominatorsOverflow )
+{
+    assertFractionDivide( +1, 1, UINT_MAX / 2,
+                          +1, 3, 1,
+                          FRACTION_DENOMINATOR_OVERFLOW,
+                          +1, 0u, 1u );
+}
+
 TEST( Fraction, DivideNumeratorsOverflow )
 {
     assertFractionDivide( +1, UINT_MAX / 2, 1,
