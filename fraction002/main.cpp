@@ -443,6 +443,14 @@ TEST( Fraction, DividePositiveAndNegativeIsNegative)
                           -1, 3u * 7u, 5u * 2u );
 }
 
+TEST( Fraction, DivideNumeratorsOverflow )
+{
+    assertFractionDivide( +1, UINT_MAX / 2, 1,
+                            +1, 1, 3,
+                            FRACTION_NUMERATOR_OVERFLOW,
+                            +1, 0u, 1u );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
