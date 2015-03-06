@@ -435,6 +435,14 @@ TEST( Fraction, DividePositiveAndPositiveIsPositive)
                           +1, 3u * 7u, 5u * 2u );
 }
 
+TEST( Fraction, DividePositiveAndNegativeIsNegative)
+{
+    assertFractionDivide( +1, 3u, 5u,
+                          -1, 2u, 7u,
+                          FRACTION_OK,
+                          -1, 3u * 7u, 5u * 2u );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
