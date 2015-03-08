@@ -51,52 +51,47 @@ TEST( GCD, IsProductOfAllCommonDivisor )
     ASSERT_THAT( gcd, Eq(5u * 7u) );
 }
 
+void assertFractionsEq( fraction f1, fraction f2 )
+{
+    ASSERT_THAT( f1.sign, f2.sign );
+    ASSERT_THAT( f1.numerator, f2.numerator );
+    ASSERT_THAT( f1.denominator, f2.denominator );
+}
+
 TEST( Fraction, AddFractionsOfCommonDenominator )
 {
     fraction f1 = { +1, 2u, 7u };
     fraction f2 = { +1, 3u, 7u };
-    fraction f3 = { 0, 0, 0 };
+    fraction expected = { +1, 2u + 3u, 7u };
 
-    f3 = fractionAdd( f1, f2 );
-    ASSERT_THAT( f3.sign, Eq(+1) );
-    ASSERT_THAT( f3.numerator, Eq(2u+3u) );
-    ASSERT_THAT( f3.denominator, Eq(7u) );
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
 
 TEST( Fraction, AddFractionsOfCommonDenominator2 )
 {
     fraction f1 = { +1, 1u, 5u };
     fraction f2 = { +1, 2u, 5u };
-    fraction f3 = { 0, 0, 0 };
+    fraction expected = { +1, 1u + 2u, 5u };
 
-    f3 = fractionAdd( f1, f2 );
-    ASSERT_THAT( f3.sign, Eq(+1) );
-    ASSERT_THAT( f3.numerator, Eq(1u+2u) );
-    ASSERT_THAT( f3.denominator, Eq(5u) );
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
 
 TEST( Fraction, AddFractionsOfDifferentDenominator )
 {
     fraction f1 = { +1, 2u, 5u };
     fraction f2 = { +1, 3u, 7u };
-    fraction f3 = { 0, 0, 0 };
+    fraction expected = { +1, 2u * 7u + 3u * 5u, 5u * 7u };
 
-    f3 = fractionAdd( f1, f2 );
-    ASSERT_THAT( f3.sign, Eq(+1) );
-    ASSERT_THAT( f3.numerator, Eq(2u * 7u + 3u * 5u) );
-    ASSERT_THAT( f3.denominator, Eq(5u * 7u) );
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
 
 TEST( Fraction, AddFractionsResultReduced )
 {
     fraction f1 = { +1, 1u, 12u };
     fraction f2 = { +1, 5u, 12u };
-    fraction f3 = { 0, 0, 0 };
+    fraction expected = { +1, 1u, 2u };
 
-    f3 = fractionAdd( f1, f2 );
-    ASSERT_THAT( f3.sign, Eq(+1) );
-    ASSERT_THAT( f3.numerator, Eq(1u) );
-    ASSERT_THAT( f3.denominator, Eq(2u) );
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
 
 int main(int argc, char **argv)
