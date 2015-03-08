@@ -29,7 +29,14 @@ fraction fractionAdd( fraction f1, fraction f2 )
 {
     fraction result;
     result.sign = +1;
-    result.numerator = f1.numerator * f2.denominator + f2.numerator * f1.denominator;
+    unsigned int n1 = f1.numerator * f2.denominator;
+    unsigned int n2 = f2.numerator * f1.denominator;
+    if( f2.sign >= 0 ){
+        result.numerator = n1 + n2;
+    }
+    else{
+        result.numerator = n1 - n2;
+    }
     result.denominator = f1.denominator * f2.denominator;
     unsigned int gcd = greatestCommonDivisor( result.numerator, result.denominator );
     result.numerator /= gcd;
@@ -90,6 +97,15 @@ TEST( Fraction, AddFractionsResultReduced )
     fraction f1 = { +1, 1u, 12u };
     fraction f2 = { +1, 5u, 12u };
     fraction expected = { +1, 1u, 2u };
+
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
+}
+
+TEST( Fraction, AddPositiveAndNegativeIsPositive )
+{
+    fraction f1 = { +1, 1u, 2u };
+    fraction f2 = { -1, 1u, 3u };
+    fraction expected = { +1, 1u, 6u };
 
     assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
