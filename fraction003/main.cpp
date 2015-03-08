@@ -28,20 +28,20 @@ typedef struct {
 fraction fractionAdd( fraction f1, fraction f2 )
 {
     fraction result;
-    result.sign = +1;
     unsigned int n1 = f1.numerator * f2.denominator;
     unsigned int n2 = f2.numerator * f1.denominator;
-    if( f2.sign >= 0 ){
+    if( f1.sign == f2.sign ){
         result.numerator = n1 + n2;
+        result.sign = +1;
     }
     else{
         if( n1 >= n2 ){
             result.numerator = n1 - n2;
-            result.sign = +1;
+            result.sign = f1.sign;
         }
         else{
             result.numerator = n2 - n1;
-            result.sign = -1;
+            result.sign = f2.sign;
         }
     }
     result.denominator = f1.denominator * f2.denominator;
@@ -122,6 +122,15 @@ TEST( Fraction, AddPositiveAndNegativeIsNegative )
     fraction f1 = { +1, 1u, 3u };
     fraction f2 = { -1, 1u, 2u };
     fraction expected = { -1, 1u, 6u };
+
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
+}
+
+TEST( Fraction, AddNegativeAndPositiveIsPositive )
+{
+    fraction f1 = { -1, 1u, 3u };
+    fraction f2 = { +1, 1u, 2u };
+    fraction expected = { +1, 1u, 6u };
 
     assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
