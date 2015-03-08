@@ -32,7 +32,7 @@ fraction fractionAdd( fraction f1, fraction f2 )
     unsigned int n2 = f2.numerator * f1.denominator;
     if( f1.sign == f2.sign ){
         result.numerator = n1 + n2;
-        result.sign = +1;
+        result.sign = f1.sign;
     }
     else{
         if( n1 >= n2 ){
@@ -140,6 +140,15 @@ TEST( Fraction, AddNegativeAndPositiveIsNegative )
     fraction f1 = { -1, 1u, 2u };
     fraction f2 = { +1, 1u, 3u };
     fraction expected = { -1, 1u, 6u };
+
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
+}
+
+TEST( Fraction, AddNegativeAndNegativeIsNegative )
+{
+    fraction f1 = { -1, 1u, 2u };
+    fraction f2 = { -1, 1u, 3u };
+    fraction expected = { -1, 5u, 6u };
 
     assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
