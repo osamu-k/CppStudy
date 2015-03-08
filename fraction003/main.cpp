@@ -35,7 +35,14 @@ fraction fractionAdd( fraction f1, fraction f2 )
         result.numerator = n1 + n2;
     }
     else{
-        result.numerator = n1 - n2;
+        if( n1 >= n2 ){
+            result.numerator = n1 - n2;
+            result.sign = +1;
+        }
+        else{
+            result.numerator = n2 - n1;
+            result.sign = -1;
+        }
     }
     result.denominator = f1.denominator * f2.denominator;
     unsigned int gcd = greatestCommonDivisor( result.numerator, result.denominator );
@@ -106,6 +113,15 @@ TEST( Fraction, AddPositiveAndNegativeIsPositive )
     fraction f1 = { +1, 1u, 2u };
     fraction f2 = { -1, 1u, 3u };
     fraction expected = { +1, 1u, 6u };
+
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
+}
+
+TEST( Fraction, AddPositiveAndNegativeIsNegative )
+{
+    fraction f1 = { +1, 1u, 3u };
+    fraction f2 = { -1, 1u, 2u };
+    fraction expected = { -1, 1u, 6u };
 
     assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
