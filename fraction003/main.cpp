@@ -135,6 +135,15 @@ TEST( Fraction, AddNegativeAndPositiveIsPositive )
     assertFractionsEq( fractionAdd( f1, f2 ), expected );
 }
 
+TEST( Fraction, AddNegativeAndPositiveIsNegative )
+{
+    fraction f1 = { -1, 1u, 2u };
+    fraction f2 = { +1, 1u, 3u };
+    fraction expected = { -1, 1u, 6u };
+
+    assertFractionsEq( fractionAdd( f1, f2 ), expected );
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleMock(&argc,argv);
