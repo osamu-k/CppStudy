@@ -13,16 +13,9 @@ TEST( TestToken, tokenIntegerCanBeCreated )
 
 TEST( TestToken, tokenVariableDeclCanBeCreated )
 {
-    TokenVariableDecl tokVarDec( "xyz" );
-    ASSERT_THAT( tokVarDec.type(), Eq(Token::TYPE_VARIABLE_DECL) );
-    ASSERT_THAT( tokVarDec.name(), StrEq("xyz") );
-}
-
-TEST( TestToken, tokenVariableRefCanBeCreated )
-{
-    TokenVariableRef tokVarRef( "abc" );
-    ASSERT_THAT( tokVarRef.type(), Eq(Token::TYPE_VARIABLE_REF) );
-    ASSERT_THAT( tokVarRef.name(), StrEq("abc") );
+    TokenVariable tokVar( "xyz" );
+    ASSERT_THAT( tokVar.type(), Eq(Token::TYPE_VARIABLE) );
+    ASSERT_THAT( tokVar.name(), StrEq("xyz") );
 }
 
 TEST( TestToken, tokenOperatorAddCanBeCreated )

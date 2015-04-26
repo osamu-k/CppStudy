@@ -11,7 +11,7 @@ Token::~Token()
 
 }
 
-Token::Type Token::type()
+Token::Type Token::type() const
 {
     return m_type;
 }
@@ -32,34 +32,18 @@ int TokenInteger::value()
     return m_value;
 }
 
-TokenVariableDecl::TokenVariableDecl( string name )
-    :Token(TYPE_VARIABLE_DECL),m_name(name)
+TokenVariable::TokenVariable( string name )
+    :Token(TYPE_VARIABLE),m_name(name)
 {
 
 }
 
-TokenVariableDecl::~TokenVariableDecl()
+TokenVariable::~TokenVariable()
 {
 
 }
 
-string TokenVariableDecl::name()
-{
-    return m_name;
-}
-
-TokenVariableRef::~TokenVariableRef()
-{
-
-}
-
-TokenVariableRef::TokenVariableRef( string name )
-    :Token(TYPE_VARIABLE_REF),m_name(name)
-{
-
-}
-
-string TokenVariableRef::name()
+string TokenVariable::name()
 {
     return m_name;
 }

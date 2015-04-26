@@ -12,8 +12,7 @@ public:
     enum Type{
         TYPE_UNDEFINED,
         TYPE_INTEGER,
-        TYPE_VARIABLE_DECL,
-        TYPE_VARIABLE_REF,
+        TYPE_VARIABLE,
         TYPE_OPERATOR_ADD,
         TYPE_OPERATOR_SUB,
         TYPE_OPERATOR_MUL,
@@ -25,7 +24,7 @@ public:
 
     Token( Type type = TYPE_UNDEFINED);
     virtual ~Token();
-    Type type();
+    Type type() const;
 
 private:
     Type m_type;
@@ -41,21 +40,11 @@ private:
     int m_value;
 };
 
-class TokenVariableDecl : public Token
+class TokenVariable : public Token
 {
 public:
-    TokenVariableDecl( string name );
-    ~TokenVariableDecl();
-    string name();
-private:
-    string m_name;
-};
-
-class TokenVariableRef : public Token
-{
-public:
-    TokenVariableRef( string name );
-    ~TokenVariableRef();
+    TokenVariable( string name );
+    ~TokenVariable();
     string name();
 private:
     string m_name;
