@@ -32,95 +32,95 @@ int TokenInteger::value()
     return m_value;
 }
 
-TokenVariable::TokenVariable( string name )
-    :Token(TYPE_VARIABLE),m_name(name)
+TokenName::TokenName( string name )
+    :Token(TYPE_NAME),m_name(name)
 {
 
 }
 
-TokenVariable::~TokenVariable()
+TokenName::~TokenName()
 {
 
 }
 
-string TokenVariable::name()
+string TokenName::name()
 {
     return m_name;
 }
 
-TokenOperatorAdd::TokenOperatorAdd()
-    :Token(TYPE_OPERATOR_ADD)
-{
+//TokenOperatorAdd::TokenOperatorAdd()
+//    :Token(TYPE_OPERATOR_ADD)
+//{
 
-}
+//}
 
-TokenOperatorAdd::~TokenOperatorAdd()
-{
+//TokenOperatorAdd::~TokenOperatorAdd()
+//{
 
-}
+//}
 
-TokenOperatorSub::TokenOperatorSub()
-    :Token(TYPE_OPERATOR_SUB)
-{
+//TokenOperatorSub::TokenOperatorSub()
+//    :Token(TYPE_OPERATOR_SUB)
+//{
 
-}
+//}
 
-TokenOperatorSub::~TokenOperatorSub()
-{
+//TokenOperatorSub::~TokenOperatorSub()
+//{
 
-}
+//}
 
-TokenOperatorMul::TokenOperatorMul()
-    :Token(TYPE_OPERATOR_MUL)
-{
+//TokenOperatorMul::TokenOperatorMul()
+//    :Token(TYPE_OPERATOR_MUL)
+//{
 
-}
+//}
 
-TokenOperatorMul::~TokenOperatorMul()
-{
+//TokenOperatorMul::~TokenOperatorMul()
+//{
 
-}
+//}
 
-TokenOperatorDiv::TokenOperatorDiv()
-    :Token(TYPE_OPERATOR_DIV)
-{
+//TokenOperatorDiv::TokenOperatorDiv()
+//    :Token(TYPE_OPERATOR_DIV)
+//{
 
-}
+//}
 
-TokenOperatorDiv::~TokenOperatorDiv()
-{
+//TokenOperatorDiv::~TokenOperatorDiv()
+//{
 
-}
+//}
 
-TokenAssignment::TokenAssignment()
-    :Token(TYPE_ASSIGNMENT)
-{
+//TokenAssignment::TokenAssignment()
+//    :Token(TYPE_ASSIGNMENT)
+//{
 
-}
+//}
 
-TokenAssignment::~TokenAssignment()
-{
+//TokenAssignment::~TokenAssignment()
+//{
 
-}
+//}
 
-TokenParenLeft::TokenParenLeft()
-    :Token(TYPE_PAREN_LEFT)
-{
+//TokenParenLeft::TokenParenLeft()
+//    :Token(TYPE_PAREN_LEFT)
+//{
 
-}
+//}
 
-TokenParenLeft::~TokenParenLeft()
-{
+//TokenParenLeft::~TokenParenLeft()
+//{
 
-}
+//}
 
-TokenParenRight::TokenParenRight()
-    :Token(TYPE_PAREN_RIGHT)
-{
+//TokenParenRight::TokenParenRight()
+//    :Token(TYPE_PAREN_RIGHT)
+//{
 
-}
+//}
 
-TokenParenRight::~TokenParenRight()
-{
+//TokenParenRight::~TokenParenRight()
+//{
 
-}
+//}

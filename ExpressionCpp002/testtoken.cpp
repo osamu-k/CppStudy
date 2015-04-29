@@ -4,6 +4,18 @@
 
 using namespace testing;
 
+TEST( TestToken, tokenCanBeCreated )
+{
+    Token token;
+    ASSERT_THAT( token.type(), Eq(Token::TYPE_UNDEFINED) );
+}
+
+TEST( TestToken, typedTokenCanBeCreated )
+{
+    Token token( Token::TYPE_OPERATOR_ADD );
+    ASSERT_THAT( token.type(), Eq(Token::TYPE_OPERATOR_ADD) );
+}
+
 TEST( TestToken, tokenIntegerCanBeCreated )
 {
     TokenInteger tokInt( 123 );
@@ -11,51 +23,9 @@ TEST( TestToken, tokenIntegerCanBeCreated )
     ASSERT_THAT( tokInt.value(), Eq(123) );
 }
 
-TEST( TestToken, tokenVariableDeclCanBeCreated )
+TEST( TestToken, tokenNameCanBeCreated )
 {
-    TokenVariable tokVar( "xyz" );
-    ASSERT_THAT( tokVar.type(), Eq(Token::TYPE_VARIABLE) );
+    TokenName tokVar( "xyz" );
+    ASSERT_THAT( tokVar.type(), Eq(Token::TYPE_NAME) );
     ASSERT_THAT( tokVar.name(), StrEq("xyz") );
-}
-
-TEST( TestToken, tokenOperatorAddCanBeCreated )
-{
-    TokenOperatorAdd tokAdd;
-    ASSERT_THAT( tokAdd.type(), Eq(Token::TYPE_OPERATOR_ADD) );
-}
-
-TEST( TestToken, tokenOperatorSubCanBeCreated )
-{
-    TokenOperatorSub tokSub;
-    ASSERT_THAT( tokSub.type(), Eq(Token::TYPE_OPERATOR_SUB) );
-}
-
-TEST( TestToken, tokenOperatorMulCanBeCreated )
-{
-    TokenOperatorMul tokMul;
-    ASSERT_THAT( tokMul.type(), Eq(Token::TYPE_OPERATOR_MUL) );
-}
-
-TEST( TestToken, tokenOperatorDivCanBeCreated )
-{
-    TokenOperatorDiv tokDiv;
-    ASSERT_THAT( tokDiv.type(), Eq(Token::TYPE_OPERATOR_DIV) );
-}
-
-TEST( TestToken, tokenAssignmentCanBeCreated )
-{
-    TokenAssignment tokAsn;
-    ASSERT_THAT( tokAsn.type(), Eq(Token::TYPE_ASSIGNMENT) );
-}
-
-TEST( TestToken, tokenParenLeftCabBeCreated )
-{
-    TokenParenLeft tokpl;
-    ASSERT_THAT( tokpl.type(), Eq(Token::TYPE_PAREN_LEFT) );
-}
-
-TEST( TestToken, tokenParenRightCabBeCreated )
-{
-    TokenParenRight tokpr;
-    ASSERT_THAT( tokpr.type(), Eq(Token::TYPE_PAREN_RIGHT) );
 }
