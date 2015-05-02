@@ -12,20 +12,20 @@ TEST( TestToken, tokenCanBeCreated )
 
 TEST( TestToken, typedTokenCanBeCreated )
 {
-    Token token( Token::TYPE_OPERATOR_ADD );
+    Token token( "+", Token::TYPE_OPERATOR_ADD );
     ASSERT_THAT( token.type(), Eq(Token::TYPE_OPERATOR_ADD) );
 }
 
 TEST( TestToken, tokenIntegerCanBeCreated )
 {
-    TokenInteger tokInt( 123 );
+    TokenInteger tokInt( "123", 123 );
     ASSERT_THAT( tokInt.type(), Eq(Token::TYPE_INTEGER) );
     ASSERT_THAT( tokInt.value(), Eq(123) );
 }
 
 TEST( TestToken, tokenNameCanBeCreated )
 {
-    TokenName tokVar( "xyz" );
+    TokenName tokVar( "xyz", "xyz" );
     ASSERT_THAT( tokVar.type(), Eq(Token::TYPE_NAME) );
     ASSERT_THAT( tokVar.name(), StrEq("xyz") );
 }

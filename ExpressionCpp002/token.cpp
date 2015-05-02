@@ -1,7 +1,7 @@
 #include "token.h"
 
-Token::Token( Type type )
-    :m_type(type)
+Token::Token( string s, Type type )
+    :m_string(s),m_type(type)
 {
 
 }
@@ -16,8 +16,8 @@ Token::Type Token::type() const
     return m_type;
 }
 
-TokenInteger::TokenInteger( int value )
-    : Token(TYPE_INTEGER),m_value(value)
+TokenInteger::TokenInteger( string s, int value )
+    : Token(s,TYPE_INTEGER),m_value(value)
 {
 
 }
@@ -32,8 +32,8 @@ int TokenInteger::value()
     return m_value;
 }
 
-TokenName::TokenName( string name )
-    :Token(TYPE_NAME),m_name(name)
+TokenName::TokenName( string s, string name )
+    :Token(s,TYPE_NAME),m_name(name)
 {
 
 }

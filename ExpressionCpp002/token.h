@@ -24,18 +24,23 @@ public:
         TYPE_END
     };
 
-    Token( Type type = TYPE_UNDEFINED);
+    Token( string s = "", Type type = TYPE_UNDEFINED);
     virtual ~Token();
     Type type() const;
+    void setString( string s )
+    { m_string = s; }
+    string getString()
+    { return m_string; }
 
 private:
     Type m_type;
+    string m_string;
 };
 
 class TokenInteger : public Token
 {
 public:
-    TokenInteger( int value );
+    TokenInteger( string s ="", int value = 0 );
     ~TokenInteger();
     int value();
 private:
@@ -45,7 +50,7 @@ private:
 class TokenName : public Token
 {
 public:
-    TokenName( string name );
+    TokenName( string s = "", string name = "" );
     ~TokenName();
     string name();
 private:

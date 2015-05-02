@@ -80,6 +80,14 @@ public:
     Node *operand2()
     { return m_operand2; }
 
+    void acceptVisitor( NodeVisitor *visitor )
+    {
+        if( operand1() )
+            operand1()->acceptVisitor(visitor);
+        if( operand2() )
+            operand2()->acceptVisitor(visitor);
+    }
+
 private:
      Node *m_operand1;
      Node *m_operand2;
@@ -97,10 +105,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand1() )
-            operand1()->acceptVisitor(visitor);
-        if( operand2() )
-            operand2()->acceptVisitor(visitor);
+        NodeInfix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -117,10 +122,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand1() )
-            operand1()->acceptVisitor(visitor);
-        if( operand2() )
-            operand2()->acceptVisitor(visitor);
+        NodeInfix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -137,10 +139,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand1() )
-            operand1()->acceptVisitor(visitor);
-        if( operand2() )
-            operand2()->acceptVisitor(visitor);
+        NodeInfix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -157,10 +156,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand1() )
-            operand1()->acceptVisitor(visitor);
-        if( operand2() )
-            operand2()->acceptVisitor(visitor);
+        NodeInfix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -257,6 +253,12 @@ public:
     Node *operand()
     { return m_operand; }
 
+    void acceptVisitor( NodeVisitor *visitor )
+    {
+        if( operand() )
+            operand()->acceptVisitor( visitor );
+    }
+
 private:
     Node *m_operand;
 };
@@ -273,8 +275,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand() )
-            operand()->acceptVisitor( visitor );
+        NodePrefix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -291,8 +292,7 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        if( operand() )
-            operand()->acceptVisitor( visitor );
+        NodePrefix::acceptVisitor( visitor );
         visitor->visit( this );
     }
 };

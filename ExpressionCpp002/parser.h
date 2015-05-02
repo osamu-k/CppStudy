@@ -16,6 +16,12 @@ public:
 
     Node *parse( string source );
 
+    void setError( string message )
+    {
+        m_error = true;
+        m_errorMessage = message;
+    }
+
     bool isError()
     {
         return m_error;

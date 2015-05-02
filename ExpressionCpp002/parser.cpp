@@ -5,7 +5,7 @@ Node *Parser::parse( string source )
     m_error = false;
     m_tokenizer->setSource( source );
     nextToken();
-    if( m_token == 0 )
+    if( m_token == 0 || m_token->type() == Token::TYPE_END )
         return 0;
 
     Node *node = 0;
@@ -15,9 +15,13 @@ Node *Parser::parse( string source )
     else{
         node = parseExpression();
     }
-    if( node == 0 ){
-        m_error = true;
-        m_errorMessage = "No eexpression.";
+    if( ! m_error ){
+        if( ! m_tokenizer->remainedString().empty() ){
+            setError("Unrecognized string '" + m_tokenizer->remainedString() + "'" );
+        }
+        else if( node == 0 ){
+            setError("No eexpression.");
+        }
     }
     return node;
 }
@@ -29,29 +33,28 @@ Node *Parser::parseExpression()
         return operand1;
     }
     while( true ){
+        string tokstr = m_token->getString();
         if( m_token->type() == Token::TYPE_OPERATOR_ADD ){
             nextToken();
             Node *operand2 = parseTerm();
-            if( m_error )
-                return new NodeAdd( operand1, operand2 );
-            if( operand2 == 0 ){
-                m_error = true;
-                m_errorMessage = "No expression after operator '+'";
-                return new NodeAdd( operand1, operand2 );
-            }
             operand1 = new NodeAdd( operand1, operand2 );
+            if( m_error )
+                return operand1;
+            if( operand2 == 0 ){
+                setError("No expression after operator '" + tokstr + "'.");
+                return operand1;
+            }
         }
         else if( m_token->type() == Token::TYPE_OPERATOR_SUB ){
             nextToken();
             Node *operand2 = parseTerm();
-            if( m_error )
-                return new NodeSub( operand1, operand2 );
-            if( operand2 == 0 ){
-                m_error = true;
-                m_errorMessage = "No expression after operator '-'";
-                return new NodeSub( operand1, operand2 );
-            }
             operand1 = new NodeSub( operand1, operand2 );
+            if( m_error )
+                return operand1;
+            if( operand2 == 0 ){
+                setError("No expression after operator '" + tokstr + "'.");
+                return operand1;
+            }
         }
         else{
             break;
@@ -67,29 +70,28 @@ Node *Parser::parseTerm()
         return operand1;
     }
     while(true){
+        string tokstr = m_token->getString();
         if( m_token->type() == Token::TYPE_OPERATOR_MUL ){
             nextToken();
             Node *operand2 = parsePrefix();
-            if( m_error )
-                return new NodeMul( operand1, operand2 );
-            if( operand2 == 0 ){
-                m_error = true;
-                m_errorMessage = "No expression after operator '*'";
-                return new NodeMul( operand1, operand2 );
-            }
             operand1 = new NodeMul( operand1, operand2 );
+            if( m_error )
+                return operand1;
+            if( operand2 == 0 ){
+                setError("No expression after operator '" + tokstr + "'.");
+                return operand1;
+            }
         }
         else if( m_token->type() == Token::TYPE_OPERATOR_DIV ){
             nextToken();
             Node *operand2 = parsePrefix();
-            if( m_error )
-                return new NodeDiv( operand1, operand2 );
-            if( operand2 == 0 ){
-                m_error = true;
-                m_errorMessage = "No expression after operator '/'";
-                return new NodeDiv( operand1, operand2 );
-            }
             operand1 = new NodeDiv( operand1, operand2 );
+            if( m_error )
+                return operand1;
+            if( operand2 == 0 ){
+                setError("No expression after operator '" + tokstr + "'.");
+                return operand1;
+            }
         }
         else{
             break;
@@ -103,29 +105,32 @@ Node *Parser::parsePrefix()
     if( m_token->type() == Token::TYPE_OPERATOR_ADD ){
         nextToken();
         Node *operand = parseFactor();
-        if( m_error )
-            return new NodePlus( operand );
-        if( operand == 0 ){
-            m_error = true;
-            m_errorMessage = "No expression after operator '+'";
-            return new NodePlus( operand );
+        Node * node = new NodePlus( operand );
+        if( m_error ){
+            return node;
         }
-        return new NodePlus( operand );
+        if( operand == 0 ){
+            setError("No expression after operator '+'.");
+            return node;
+        }
+        return node;
     }
     else if( m_token->type() == Token::TYPE_OPERATOR_SUB ){
         nextToken();
         Node *operand = parseFactor();
+        Node * node = new NodeMinus( operand );
         if( m_error ){
-            return new NodeMinus( operand );
+            return node;
         }
         if( operand == 0 ){
-            m_error = true;
-            m_errorMessage = "No expression after operator '-'";
-            return new NodeMinus( operand );
+            setError("No expression after operator '-'.");
+            return node;
         }
-        return new NodeMinus( operand );
+        return node;
     }
-    return parseFactor();
+    else{
+        return parseFactor();
+    }
 }
 
 Node *Parser::parseFactor()
@@ -148,8 +153,7 @@ Node *Parser::parseFactor()
         if( m_error )
             return node;
         if( m_token->type() != Token::TYPE_PAREN_CLOSE ){
-            m_error = true;
-            m_errorMessage = "Parenthesis is not closed.";
+            setError("Parenthesis is not closed.");
             return node;
         }
         nextToken();
@@ -171,8 +175,7 @@ Node *Parser::parseAssign()
 
     nextToken();
     if( m_token->type() != Token::TYPE_ASSIGNMENT ){
-        m_error = true;
-        m_errorMessage = "No assignment operator.";
+        setError("No assignment operator.");
         return new NodeAssign( varDecl, 0 );
     }
 
@@ -182,8 +185,7 @@ Node *Parser::parseAssign()
         return value;
     }
     if( value == 0 ){
-        m_error = true;
-        m_errorMessage = "No expression after assignment operator.";
+        setError("No expression after assignment operator.");
         return new NodeAssign( varDecl, value );
     }
     return new NodeAssign( varDecl, value );

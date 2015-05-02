@@ -29,6 +29,7 @@ void Tokenizer::setSource( string source )
 {
     m_source = source;
     m_nextc = m_source.begin();
+    m_remaindString = m_source.begin();
 }
 
 void Tokenizer::skipSpaces()
@@ -51,19 +52,28 @@ Token *Tokenizer::next()
     if( (token = makeOperatorToken()) != 0 ){
         return token;
     }
-    return new Token(Token::TYPE_END);
+    m_remaindString = m_nextc;
+    return new Token( "", Token::TYPE_END);
+}
+
+string Tokenizer::remainedString()
+{
+    string::const_iterator end = m_source.end();
+    return string(m_remaindString,end);
 }
 
 Token *Tokenizer::makeTokenInteger()
 {
     if( isnumber(*m_nextc) ){
+        m_remaindString = m_nextc;
         int value = 0;
+        string::const_iterator start = m_nextc;
         while( isnumber(*m_nextc) ){
             value *= 10;
             value += *m_nextc - '0';
             m_nextc++;
         }
-        return new TokenInteger(value);
+        return new TokenInteger(string( start, m_nextc ),value);
     }
     return 0;
 }
@@ -71,6 +81,7 @@ Token *Tokenizer::makeTokenInteger()
 Token *Tokenizer::makeTokenName()
 {
     if( isalpha(*m_nextc) ){
+        m_remaindString = m_nextc;
         string::const_iterator start = m_nextc;
         while( isalnum(*m_nextc) ){
             m_nextc++;
@@ -78,10 +89,10 @@ Token *Tokenizer::makeTokenName()
         string name = string( start, m_nextc );
         map<string, Token::Type>::const_iterator it = m_keywordMap.find(name);
         if( it != m_keywordMap.end() ){
-            Token *token = new Token(it->second);
+            Token *token = new Token(string( start, m_nextc ),it->second);
             return token;
         }
-        return new TokenName( name );
+        return new TokenName( string( start, m_nextc ), name );
     }
     return 0;
 }
@@ -90,9 +101,10 @@ Token *Tokenizer::makeOperatorToken()
 {
     map<char,Token::Type>::const_iterator it = m_typeMap.find(*m_nextc);
     if( it != m_typeMap.end() ){
-        Token *token = new Token(it->second);
+        m_remaindString = m_nextc;
+        string::const_iterator start = m_nextc;
         m_nextc++;
-        return token;
+        return new Token(string( start, m_nextc ),it->second);
     }
     return 0;
 }
