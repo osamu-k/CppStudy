@@ -97,8 +97,10 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand1()->acceptVisitor(visitor);
-        operand2()->acceptVisitor(visitor);
+        if( operand1() )
+            operand1()->acceptVisitor(visitor);
+        if( operand2() )
+            operand2()->acceptVisitor(visitor);
         visitor->visit( this );
     }
 };
@@ -115,8 +117,10 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand1()->acceptVisitor(visitor);
-        operand2()->acceptVisitor(visitor);
+        if( operand1() )
+            operand1()->acceptVisitor(visitor);
+        if( operand2() )
+            operand2()->acceptVisitor(visitor);
         visitor->visit( this );
     }
 };
@@ -133,8 +137,10 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand1()->acceptVisitor(visitor);
-        operand2()->acceptVisitor(visitor);
+        if( operand1() )
+            operand1()->acceptVisitor(visitor);
+        if( operand2() )
+            operand2()->acceptVisitor(visitor);
         visitor->visit( this );
     }
 };
@@ -151,8 +157,10 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand1()->acceptVisitor(visitor);
-        operand2()->acceptVisitor(visitor);
+        if( operand1() )
+            operand1()->acceptVisitor(visitor);
+        if( operand2() )
+            operand2()->acceptVisitor(visitor);
         visitor->visit( this );
     }
 };
@@ -222,8 +230,10 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        var()->acceptVisitor(visitor);
-        value()->acceptVisitor(visitor);
+        if( var() )
+            var()->acceptVisitor(visitor);
+        if( value() )
+            value()->acceptVisitor(visitor);
         visitor->visit( this );
     }
 
@@ -263,7 +273,8 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand()->acceptVisitor( visitor );
+        if( operand() )
+            operand()->acceptVisitor( visitor );
         visitor->visit( this );
     }
 };
@@ -280,7 +291,8 @@ public:
 
     void acceptVisitor( NodeVisitor *visitor )
     {
-        operand()->acceptVisitor( visitor );
+        if( operand() )
+            operand()->acceptVisitor( visitor );
         visitor->visit( this );
     }
 };

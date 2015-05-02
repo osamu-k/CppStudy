@@ -12,7 +12,7 @@ class TestEvaluator : public Test
 {
 public:
     TestEvaluator()
-        :parser(&tokenizer), evaluator(&parser)
+        :parser(&tokenizer)
     {}
     ~TestEvaluator()
     {}
@@ -20,6 +20,12 @@ public:
     Tokenizer tokenizer;
     Parser parser;
     Evaluator evaluator;
+
+    int evaluate( string source )
+    {
+        Node *node = parser.parse( source );
+        return evaluator.evaluate( node );
+    }
 };
 
 #endif // TESTEVALUATOR_H

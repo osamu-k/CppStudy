@@ -105,6 +105,26 @@ TEST_F( TestParser, recognizesTermRepetition)
     delete node;
 }
 
+TEST_F( TestParser, recognizesTermRepetition2)
+{
+    Node *node = parser.parse("123*456*789");
+    ASSERT_THAT( node->type(), Eq(Node::TYPE_MUL) );
+    NodeMul *nodeMul1 = dynamic_cast<NodeMul *>(node);
+    Node *operand1 = nodeMul1->operand1();
+    Node *operand2 = nodeMul1->operand2();
+    ASSERT_THAT( operand1->type(), Eq(Node::TYPE_MUL) );
+
+    NodeMul *nodeMul2 = dynamic_cast<NodeMul*>(operand1);
+    Node *mulop1 = nodeMul2->operand1();
+    Node *mulop2 = nodeMul2->operand2();
+    ASSERT_THAT( mulop1->type(), Eq(Node::TYPE_INTEGER) );
+    ASSERT_THAT( mulop2->type(), Eq(Node::TYPE_INTEGER) );
+
+    ASSERT_THAT( operand2->type(), Eq(Node::TYPE_INTEGER) );
+
+    delete node;
+}
+
 TEST_F( TestParser, recognizesAdd )
 {
     Node *node = parser.parse("123+xyz");
@@ -148,6 +168,26 @@ TEST_F( TestParser, recognizesExpressionRepetition)
     NodeMinus *nodeMin = dynamic_cast<NodeMinus*>(operand2);
     Node *minop = nodeMin->operand();
     ASSERT_THAT( minop->type(), Eq(Node::TYPE_INTEGER) );
+
+    delete node;
+}
+
+TEST_F( TestParser, recognizesExpressionRepetition2 )
+{
+    Node *node = parser.parse("123+456+789");
+    ASSERT_THAT( node->type(), Eq(Node::TYPE_ADD) );
+    NodeAdd *nodeAdd1 = dynamic_cast<NodeAdd *>(node);
+    Node *operand1 = nodeAdd1->operand1();
+    Node *operand2 = nodeAdd1->operand2();
+
+    ASSERT_THAT( operand1->type(), Eq(Node::TYPE_ADD) );
+    NodeAdd *nodeAdd2 = dynamic_cast<NodeAdd*>(operand1);
+    Node *addop1 = nodeAdd2->operand1();
+    Node *addop2 = nodeAdd2->operand2();
+    ASSERT_THAT( addop1->type(), Eq(Node::TYPE_INTEGER) );
+    ASSERT_THAT( addop2->type(), Eq(Node::TYPE_INTEGER) );
+
+    ASSERT_THAT( operand2->type(), Eq(Node::TYPE_INTEGER) );
 
     delete node;
 }
