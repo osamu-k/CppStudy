@@ -444,8 +444,38 @@ void Calculator::equalButtonClicked()
 
 void Calculator::allClearButtonClicked()
 {
+    getLineDisplay()->clear();
+    getLineInput()->clear();
+    m_currentData.clear();
+    m_operation = 0;
+    m_state = STATE_NUM1_WAITING;
+    disableIrrelevantButtons();
 }
 
 void Calculator::clearButtonClicked()
 {
+    switch(m_state){
+    case STATE_NUM1_WAITING:
+        // Nothing to do.
+        return;
+    case STATE_NUM1_INTEGER_PART:
+    case STATE_NUM1_DECIMAL_PART:
+        getLineInput()->clear();
+        m_state = STATE_NUM1_WAITING;
+        break;
+    case STATE_NUM2_WAITING:
+        // Nothing to do.
+        return;
+    case STATE_NUM2_INTEGER_PART:
+    case STATE_NUM2_DECIMAL_PART:
+        getLineInput()->clear();
+        m_state = STATE_NUM2_WAITING;
+        break;
+    case STATE_SHOW_RESULT:
+        // Nothing to do.
+        return;
+    default:
+        return;
+    }
+    disableIrrelevantButtons();
 }
