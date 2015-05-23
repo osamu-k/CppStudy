@@ -78,7 +78,6 @@ private:
         STATE_SHOW_RESULT
     };
 
-//    enum state m_state;
     QString m_currentData;
     func_ptr m_operation;
 
@@ -96,8 +95,10 @@ private:
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
         QString name() { return m_name; }
+        QLineEdit *getLineDisplay() { return m_calculator->getLineDisplay(); }
+        QLineEdit *getLineInput() { return m_calculator->getLineInput(); }
     protected:
-        void setState( State *state );
+        void setState( enum state state );
         Calculator *m_calculator;
         QString m_name;
     };
@@ -109,9 +110,9 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
-//        virtual void operatorButtonClicked(QString label, func_ptr func);
-//        virtual void equalButtonClicked();
+        virtual void signButtonClicked();
+        virtual void operatorButtonClicked(QString label, func_ptr func);
+        virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
     };
@@ -123,9 +124,9 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
+        virtual void signButtonClicked();
         virtual void operatorButtonClicked(QString label, func_ptr func);
-//        virtual void equalButtonClicked();
+        virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
     };
@@ -137,9 +138,9 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
+        virtual void signButtonClicked();
         virtual void operatorButtonClicked(QString label, func_ptr func);
-//        virtual void equalButtonClicked();
+        virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
     };
@@ -151,9 +152,9 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
-//        virtual void operatorButtonClicked(QString label, func_ptr func);
-//        virtual void equalButtonClicked();
+        virtual void signButtonClicked();
+        virtual void operatorButtonClicked(QString label, func_ptr func);
+        virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
     };
@@ -165,7 +166,7 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
+        virtual void signButtonClicked();
         virtual void operatorButtonClicked(QString label, func_ptr func);
         virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
@@ -179,7 +180,7 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
+        virtual void signButtonClicked();
         virtual void operatorButtonClicked(QString label, func_ptr func);
         virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
@@ -193,9 +194,9 @@ private:
         virtual void disableIrrelevantButtons();
         virtual void numberButtonClicked(QString digit);
         virtual void dotButtonClicked();
-//        virtual void signButtonClicked();
+        virtual void signButtonClicked();
         virtual void operatorButtonClicked(QString label, func_ptr func);
-//        virtual void equalButtonClicked();
+        virtual void equalButtonClicked();
         virtual void allClearButtonClicked();
         virtual void clearButtonClicked();
     };
@@ -208,7 +209,10 @@ private:
     StateNum2DecimalPart m_stateNum2DecimalPart;
     StateShowResult      m_stateShowResult;
 
-    State *m_state;
+    QMap<enum state, State *> m_stateMap;
+
+    enum state m_state;
+//    State *m_state;
 };
 
 #endif // CALCULATOR_H
